@@ -19,6 +19,7 @@ export default class App extends Component {
                         <li><IndexLink to="/">Home</IndexLink></li>
                         <li><Link to="/about/">About</Link></li>
                         <li><Link to="/simple/">Simple</Link></li>
+                        <li><Link to="/async/">Async</Link></li>
                     </ul>
                 </nav>
                 { this.props.children }

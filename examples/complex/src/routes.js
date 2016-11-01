@@ -12,5 +12,18 @@ export default () => (
         <IndexRoute component={ Main } value={true}/>
         <Route path="about/" component={ About } data={2} />
         <Route path="simple/" component={ Simple } data={3} />
+        <Route
+            path="async"
+            getComponent={ (nextState, callback) => {
+                require.ensure([], () => {
+                    const Async = require('./components/async').default;
+                    callback(
+                        null,
+                        Async
+                    );
+                });
+            }}
+            data={4}
+        />
     </Route>
 );
