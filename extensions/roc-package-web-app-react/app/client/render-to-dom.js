@@ -26,11 +26,11 @@ function renderAsync({ history, routes, ...rest }) {
     });
 }
 
-export default function renderToDOM(props) {
+export default function renderToDOM(options) {
     if (rocConfig.runtime.ssr) {
-        renderAsync(props);
+        renderAsync(options);
     } else {
-        const { history, routes, ...rest } = props;
+        const { history, routes, ...rest } = options;
         renderSync({
             ...rest,
             renderProps: {
