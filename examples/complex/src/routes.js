@@ -15,7 +15,7 @@ export default () => (
         <Route
             path="async"
             getComponent={ (nextState, callback) => {
-                require.ensure([], () => {
+                require.ensure([], (require) => {
                     const Async = require('./components/async').default;
                     callback(
                         null,
