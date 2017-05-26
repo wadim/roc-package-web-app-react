@@ -67,8 +67,6 @@ export default function createClient({ createRoutes, createStore, mountNode }) {
     }
 
     const render = () => {
-        const node = document.getElementById(mountNode);
-
         const forceRefreshSetting = rocConfig.runtime.history.forceRefresh;
         let history = useRouterHistory(createHistory)({
             basename,
@@ -149,30 +147,29 @@ export default function createClient({ createRoutes, createStore, mountNode }) {
             ));
         }
 
-        let initialLoading;
-        if (HAS_CLIENT_LOADING) {
-            initialLoading = require(ROC_CLIENT_LOADING).default;
-        }
+        const node = document.getElementById(mountNode);
         let updateScroll = () => {};
-        renderToDOM({
-            node,
-            createComponent: compose(...createComponent),
-            history,
-            routes,
-            routerRenderFn: applyRouterMiddleware(
-                useScroll({
-                    updateScroll: (cb) => { updateScroll = cb; },
-                }),
-                useRedial({
-                    locals,
-                    initialLoading,
-                    beforeTransition: rocConfig.runtime.fetch.client.beforeTransition,
-                    afterTransition: rocConfig.runtime.fetch.client.afterTransition,
-                    parallel: rocConfig.runtime.fetch.client.parallel,
-                    onCompleted: (type) => type === 'beforeTransition' && updateScroll(),
-                })
-            ),
-        });
+        renderToDOM(
+            {
+                createComponent: compose(...createComponent),
+                history,
+                routes,
+                routerRenderFn: applyRouterMiddleware(
+                    useScroll({
+                        updateScroll: (cb) => { updateScroll = cb; },
+                    }),
+                    useRedial({
+                        locals,
+                        initialLoading: HAS_CLIENT_LOADING ? require(ROC_CLIENT_LOADING).default : undefined,
+                        beforeTransition: rocConfig.runtime.fetch.client.beforeTransition,
+                        afterTransition: rocConfig.runtime.fetch.client.afterTransition,
+                        parallel: rocConfig.runtime.fetch.client.parallel,
+                        onCompleted: (type) => type === 'beforeTransition' && updateScroll(),
+                    })
+                ),
+            },
+            node
+        );
 
         if (__DEV__) {
             const devNode = document.createElement('div');

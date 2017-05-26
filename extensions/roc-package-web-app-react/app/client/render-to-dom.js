@@ -4,9 +4,7 @@ import ReactDOM from 'react-dom';
 import Router from 'react-router/lib/Router';
 import match from 'react-router/lib/match';
 
-import { rocConfig } from '../shared/universal-config';
-
-function renderSync({ renderProps, createComponent, node, routerRenderFn }) {
+function renderSync({ renderProps, createComponent, routerRenderFn }, node) {
     const finalComponent = createComponent(
         <Router
             {...renderProps}
@@ -17,26 +15,11 @@ function renderSync({ renderProps, createComponent, node, routerRenderFn }) {
     ReactDOM.render(finalComponent, node);
 }
 
-function renderAsync({ history, routes, ...rest }) {
+export default function renderAsync({ history, routes, ...rest }, node) {
     match({ history, routes }, (error, redirectLocation, renderProps) => {
         renderSync({
             ...rest,
             renderProps,
-        });
+        }, node);
     });
-}
-
-export default function renderToDOM(options) {
-    if (rocConfig.runtime.ssr) {
-        renderAsync(options);
-    } else {
-        const { history, routes, ...rest } = options;
-        renderSync({
-            ...rest,
-            renderProps: {
-                history,
-                routes,
-            },
-        });
-    }
 }
