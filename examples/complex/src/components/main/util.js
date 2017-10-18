@@ -5,6 +5,8 @@ const userUrl = (user) => `https://api.github.com/users/${user}/repos`;
 
 // compatible with redial '@provideHooks'-fetch
 export function prefetchRepos({ dispatch, getState }) {
+    console.log('fetch');
+
     // read the repository source URL from state
     const user = getState().repoUser;
 

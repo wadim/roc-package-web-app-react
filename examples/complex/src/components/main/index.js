@@ -61,6 +61,7 @@ export default class Main extends React.Component {
     };
 
     render() {
+        console.log('render');
         return (
             <div className={ styles.main }>
                 <img src={ logo } className={ styles.logo }/>
