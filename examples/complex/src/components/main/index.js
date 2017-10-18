@@ -57,11 +57,12 @@ export default class Main extends React.Component {
         // connected values from store
         clicker: React.PropTypes.number,
         repositories: React.PropTypes.object,
-        errors: React.PropTypes.array
+        errors: React.PropTypes.array,
+        loading: React.PropTypes.bool,
     };
 
     render() {
-        console.log('render');
+        console.log('render, loading: ', this.props.loading);
         return (
             <div className={ styles.main }>
                 <img src={ logo } className={ styles.logo }/>
